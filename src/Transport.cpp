@@ -369,14 +369,14 @@ namespace mediasoupclient
 		return this->sendHandler->GetSenderStats(producer->GetLocalId());
 	}
 
-	void SendTransport::OnPause(Producer* producer) 
+	void SendTransport::OnPause(const Producer* producer) 
 	{
 		MSC_TRACE();
 
 		this->sendHandler->PauseSending(producer->GetLocalId());
 	}
 	
-	void SendTransport::OnResume(Producer* producer) 
+	void SendTransport::OnResume(const Producer* producer) 
 	{
 		MSC_TRACE();
 		

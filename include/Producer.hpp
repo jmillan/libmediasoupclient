@@ -23,8 +23,8 @@ namespace mediasoupclient
 			  const Producer* producer, webrtc::MediaStreamTrackInterface* newTrack)             = 0;
 			virtual void OnSetMaxSpatialLayer(const Producer* producer, uint8_t maxSpatialLayer) = 0;
 			virtual nlohmann::json OnGetStats(const Producer* producer)                          = 0;
-			virtual void OnPause(Producer* producer)                                             = 0;
-			virtual void OnResume(Producer* producer)                                            = 0;
+			virtual void OnPause(const Producer* producer)                                             = 0;
+			virtual void OnResume(const Producer* producer)                                            = 0;
 		};
 
 		/* Public Listener API */
