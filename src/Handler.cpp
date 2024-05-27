@@ -619,7 +619,8 @@ namespace mediasoupclient
 		this->pc->SetRemoteDescription(PeerConnection::SdpType::ANSWER, answer);
 	}
 
-	void SendHandler::PauseSending(const std::string& localId) {
+	void SendHandler::PauseSending(const std::string& localId) 
+	{
         MSC_DEBUG("[localId:%s]", localId.c_str());
 
         auto locaIdIt = this->mapMidTransceiver.find(localId);
@@ -642,8 +643,10 @@ namespace mediasoupclient
         this->pc->SetRemoteDescription(PeerConnection::SdpType::ANSWER, sdpAnswer);
     }
 
-    void SendHandler::ResumeSending(const std::string& localId) {
+    void SendHandler::ResumeSending(const std::string& localId) 
+	{
         MSC_DEBUG("resumeSending() [localId:%s]", localId.c_str());
+
         auto locaIdIt = this->mapMidTransceiver.find(localId);
 
         if (locaIdIt == this->mapMidTransceiver.end())
