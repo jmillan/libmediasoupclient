@@ -622,12 +622,12 @@ namespace mediasoupclient
 	void SendHandler::PauseSending(const std::string& localId) {
         MSC_DEBUG("[localId:%s]", localId.c_str());
 
-		auto locaIdIt = this->mapMidTransceiver.find(localId);
+        auto locaIdIt = this->mapMidTransceiver.find(localId);
 
-		if (locaIdIt == this->mapMidTransceiver.end())
+        if (locaIdIt == this->mapMidTransceiver.end())
 			MSC_THROW_ERROR("associated RtpTransceiver not found");
 
-		auto* transceiver = locaIdIt->second;
+        auto* transceiver = locaIdIt->second;
 
         transceiver->SetDirectionWithError(webrtc::RtpTransceiverDirection::kInactive);
 		webrtc::PeerConnectionInterface::RTCOfferAnswerOptions options;
@@ -644,12 +644,12 @@ namespace mediasoupclient
 
     void SendHandler::ResumeSending(const std::string& localId) {
         MSC_DEBUG("resumeSending() [localId:%s]", localId.c_str());
-		auto locaIdIt = this->mapMidTransceiver.find(localId);
+        auto locaIdIt = this->mapMidTransceiver.find(localId);
 
-		if (locaIdIt == this->mapMidTransceiver.end())
-			MSC_THROW_ERROR("associated RtpTransceiver not found");
+        if (locaIdIt == this->mapMidTransceiver.end())
+        	MSC_THROW_ERROR("associated RtpTransceiver not found");
 
-		auto* transceiver = locaIdIt->second;
+        auto* transceiver = locaIdIt->second;
 
         transceiver->SetDirectionWithError(webrtc::RtpTransceiverDirection::kSendOnly);
 		webrtc::PeerConnectionInterface::RTCOfferAnswerOptions options;
