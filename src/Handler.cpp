@@ -639,7 +639,7 @@ namespace mediasoupclient
 
         auto sdpAnswer = this->remoteSdp->GetSdp();
         MSC_DEBUG("calling pc.setRemoteDescription() [answer:%s]", sdpAnswer.c_str());
-		this->pc->SetRemoteDescription(PeerConnection::SdpType::ANSWER, sdpAnswer);
+        this->pc->SetRemoteDescription(PeerConnection::SdpType::ANSWER, sdpAnswer);
     }
 
     void SendHandler::ResumeSending(const std::string& localId) {
@@ -660,7 +660,7 @@ namespace mediasoupclient
 
         auto sdpAnswer = this->remoteSdp->GetSdp();
         MSC_DEBUG("calling pc.setRemoteDescription() [answer:%s]", sdpAnswer.c_str());
-		this->pc->SetRemoteDescription(PeerConnection::SdpType::ANSWER, sdpAnswer);
+        this->pc->SetRemoteDescription(PeerConnection::SdpType::ANSWER, sdpAnswer);
     }
 
 	/* RecvHandler methods */
