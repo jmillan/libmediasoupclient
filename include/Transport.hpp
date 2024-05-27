@@ -157,8 +157,8 @@ namespace mediasoupclient
 		void OnReplaceTrack(const Producer* producer, webrtc::MediaStreamTrackInterface* track) override;
 		void OnSetMaxSpatialLayer(const Producer* producer, uint8_t maxSpatialLayer) override;
 		nlohmann::json OnGetStats(const Producer* producer) override;
-		void OnPause(Producer* producer);
-		void OnResume(Producer* producer);
+		void OnPause(Producer* producer) override;
+		void OnResume(Producer* producer) override;
 
 	private:
 		// Listener instance.
