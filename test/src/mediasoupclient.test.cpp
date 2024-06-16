@@ -5,6 +5,23 @@
 #include "mediasoupclient.hpp"
 #include <catch.hpp>
 #include <vector>
+#include <iostream>
+
+extern mediasoupclient::PeerConnection::Options PeerConnectionOptions;
+extern void createFactory();
+extern void ReleaseThreads();
+
+struct TestContext {
+    TestContext() {
+        createFactory();
+    }
+
+    ~TestContext() {
+        ReleaseThreads();
+    }
+
+};
+static std::unique_ptr<TestContext> context;
 
 TEST_CASE("mediasoupclient", "[mediasoupclient]")
 {
@@ -34,6 +51,10 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 
 	static json routerRtpCapabilities;
 
+	if (!context) {
+        context = std::make_unique<TestContext>();
+    }
+
 	SECTION("create a Device succeeds")
 	{
 		REQUIRE_NOTHROW(device.reset(new mediasoupclient::Device()));
@@ -49,6 +70,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 	{
 		REQUIRE_THROWS_AS(device->CanProduce("audio"), MediaSoupClientInvalidStateError);
 		REQUIRE_THROWS_AS(device->CanProduce("video"), MediaSoupClientInvalidStateError);
+
 	}
 
 	SECTION("device.CreateSendTransport() throws if not loaded")
@@ -60,7 +82,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		    TransportRemoteParameters["iceParameters"],
 		    TransportRemoteParameters["iceCandidates"],
 		    TransportRemoteParameters["dtlsParameters"],
-		    nullptr),
+		    &PeerConnectionOptions),
 		  MediaSoupClientInvalidStateError);
 	}
 
@@ -132,7 +154,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		  TransportRemoteParameters["iceCandidates"],
 		  TransportRemoteParameters["dtlsParameters"],
 		  TransportRemoteParameters["sctpParameters"],
-		  nullptr,
+		  &PeerConnectionOptions,
 		  appData)));
 
 		REQUIRE(sendTransport->GetId() == TransportRemoteParameters["id"].get<std::string>());
@@ -149,7 +171,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		  TransportRemoteParameters["iceParameters"],
 		  TransportRemoteParameters["iceCandidates"],
 		  TransportRemoteParameters["dtlsParameters"],
-		  nullptr)));
+		  &PeerConnectionOptions)));
 
 		REQUIRE(recvTransport->GetId() == TransportRemoteParameters["id"].get<std::string>());
 		REQUIRE(!recvTransport->IsClosed());
@@ -324,7 +346,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		  TransportRemoteParameters["iceParameters"],
 		  TransportRemoteParameters["iceCandidates"],
 		  TransportRemoteParameters["dtlsParameters"],
-		  nullptr,
+		  &PeerConnectionOptions,
 		  appData)));
 
 		REQUIRE_THROWS_AS(
@@ -809,5 +831,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		REQUIRE_THROWS_AS(
 			sendTransport->UpdateIceServers(iceServers),
 			MediaSoupClientError);
+
+		context = nullptr;
 	}
 }

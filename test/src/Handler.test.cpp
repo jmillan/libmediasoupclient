@@ -9,7 +9,22 @@
 static const json TransportRemoteParameters = generateTransportRemoteParameters();
 static const json RtpParametersByKind       = generateRtpParametersByKind();
 
-static mediasoupclient::PeerConnection::Options PeerConnectionOptions;
+
+extern mediasoupclient::PeerConnection::Options PeerConnectionOptions;
+extern void createFactory();
+extern void ReleaseThreads();
+
+struct TestContext {
+    TestContext() {
+        createFactory();
+    }
+
+    ~TestContext() {
+        ReleaseThreads();
+    }
+
+};
+static std::unique_ptr<TestContext> context;
 
 class FakeHandlerListener : public mediasoupclient::Handler::PrivateListener
 {
@@ -38,6 +53,10 @@ TEST_CASE("SendHandler", "[Handler][SendHandler]")
 {
 	static FakeHandlerListener handlerListener;
 
+	if (!context) {
+        context = std::make_unique<TestContext>();
+    }
+
 	static mediasoupclient::SendHandler sendHandler(
 	  &handlerListener,
 	  TransportRemoteParameters["iceParameters"],
@@ -48,8 +67,8 @@ TEST_CASE("SendHandler", "[Handler][SendHandler]")
 	  RtpParametersByKind,
 	  RtpParametersByKind);
 
-	static std::unique_ptr<mediasoupclient::PeerConnection> pc(
-	  new mediasoupclient::PeerConnection(nullptr, &PeerConnectionOptions));
+	// static std::unique_ptr<mediasoupclient::PeerConnection> pc(
+	//   new mediasoupclient::PeerConnection(nullptr, &PeerConnectionOptions));
 
 	static rtc::scoped_refptr<webrtc::AudioTrackInterface> track;
 
@@ -142,6 +161,8 @@ TEST_CASE("SendHandler", "[Handler][SendHandler]")
 	SECTION("sendHandler.UpdateIceServers() succeeds")
 	{
 		REQUIRE_NOTHROW(sendHandler.UpdateIceServers(json::array()));
+		sendHandler.Close();
+		context = nullptr;
 	}
 }
 
@@ -204,5 +225,6 @@ TEST_CASE("RecvHandler", "[Handler][RecvHandler]")
 	SECTION("recvHandler.UpdateIceServers() succeeds")
 	{
 		REQUIRE_NOTHROW(recvHandler.UpdateIceServers(json::array()));
+		recvHandler.Close();
 	}
 }
