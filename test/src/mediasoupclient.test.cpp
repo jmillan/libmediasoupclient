@@ -7,21 +7,7 @@
 #include <vector>
 #include <iostream>
 
-extern mediasoupclient::PeerConnection::Options PeerConnectionOptions;
-extern void createFactory();
-extern void ReleaseThreads();
 
-struct TestContext {
-    TestContext() {
-        createFactory();
-    }
-
-    ~TestContext() {
-        ReleaseThreads();
-    }
-
-};
-static std::unique_ptr<TestContext> context;
 
 TEST_CASE("mediasoupclient", "[mediasoupclient]")
 {
@@ -51,9 +37,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 
 	static json routerRtpCapabilities;
 
-	if (!context) {
-        context = std::make_unique<TestContext>();
-    }
+	Singleton& singleton = Singleton::getInstance();
 
 	SECTION("create a Device succeeds")
 	{
@@ -82,7 +66,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		    TransportRemoteParameters["iceParameters"],
 		    TransportRemoteParameters["iceCandidates"],
 		    TransportRemoteParameters["dtlsParameters"],
-		    &PeerConnectionOptions),
+		    &singleton.PeerConnectionOptions),
 		  MediaSoupClientInvalidStateError);
 	}
 
@@ -154,7 +138,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		  TransportRemoteParameters["iceCandidates"],
 		  TransportRemoteParameters["dtlsParameters"],
 		  TransportRemoteParameters["sctpParameters"],
-		  &PeerConnectionOptions,
+		  &singleton.PeerConnectionOptions,
 		  appData)));
 
 		REQUIRE(sendTransport->GetId() == TransportRemoteParameters["id"].get<std::string>());
@@ -171,7 +155,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		  TransportRemoteParameters["iceParameters"],
 		  TransportRemoteParameters["iceCandidates"],
 		  TransportRemoteParameters["dtlsParameters"],
-		  &PeerConnectionOptions)));
+		  &singleton.PeerConnectionOptions)));
 
 		REQUIRE(recvTransport->GetId() == TransportRemoteParameters["id"].get<std::string>());
 		REQUIRE(!recvTransport->IsClosed());
@@ -346,7 +330,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		  TransportRemoteParameters["iceParameters"],
 		  TransportRemoteParameters["iceCandidates"],
 		  TransportRemoteParameters["dtlsParameters"],
-		  &PeerConnectionOptions,
+		  &singleton.PeerConnectionOptions,
 		  appData)));
 
 		REQUIRE_THROWS_AS(
@@ -832,6 +816,6 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 			sendTransport->UpdateIceServers(iceServers),
 			MediaSoupClientError);
 
-		context = nullptr;
+		// context = nullptr;
 	}
 }
