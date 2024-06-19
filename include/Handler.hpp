@@ -21,7 +21,7 @@ namespace mediasoupclient
 		class PrivateListener
 		{
 		public:
-			virtual ~PrivateListener() = default;
+			virtual ~PrivateListener()                             = default;
 			virtual void OnConnect(nlohmann::json& dtlsParameters) = 0;
 			virtual void OnConnectionStateChange(
 			  webrtc::PeerConnectionInterface::IceConnectionState connectionState) = 0;
@@ -69,7 +69,8 @@ namespace mediasoupclient
 		// Got transport local and remote parameters.
 		bool transportReady{ false };
 		// Map of RTCTransceivers indexed by MID.
-		std::unordered_map<std::string, rtc::scoped_refptr<webrtc::RtpTransceiverInterface>> mapMidTransceiver{};
+		std::unordered_map<std::string, rtc::scoped_refptr<webrtc::RtpTransceiverInterface>>
+		  mapMidTransceiver{};
 		// PeerConnection instance.
 		std::unique_ptr<PeerConnection> pc{ nullptr };
 		bool hasDataChannelMediaSection = false;

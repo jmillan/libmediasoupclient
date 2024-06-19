@@ -113,15 +113,15 @@ namespace mediasoupclient
 			  webrtc::CreateBuiltinAudioEncoderFactory(),
 			  webrtc::CreateBuiltinAudioDecoderFactory(),
 			  std::make_unique<webrtc::VideoEncoderFactoryTemplate<
-				webrtc::LibvpxVp8EncoderTemplateAdapter,
-				webrtc::LibvpxVp9EncoderTemplateAdapter,
-				webrtc::OpenH264EncoderTemplateAdapter,
-				webrtc::LibaomAv1EncoderTemplateAdapter>>(),
+			    webrtc::LibvpxVp8EncoderTemplateAdapter,
+			    webrtc::LibvpxVp9EncoderTemplateAdapter,
+			    webrtc::OpenH264EncoderTemplateAdapter,
+			    webrtc::LibaomAv1EncoderTemplateAdapter>>(),
 			  std::make_unique<webrtc::VideoDecoderFactoryTemplate<
-				webrtc::LibvpxVp8DecoderTemplateAdapter,
-				webrtc::LibvpxVp9DecoderTemplateAdapter,
-				webrtc::OpenH264DecoderTemplateAdapter,
-				webrtc::Dav1dDecoderTemplateAdapter>>(),
+			    webrtc::LibvpxVp8DecoderTemplateAdapter,
+			    webrtc::LibvpxVp9DecoderTemplateAdapter,
+			    webrtc::OpenH264DecoderTemplateAdapter,
+			    webrtc::Dav1dDecoderTemplateAdapter>>(),
 			  nullptr /*audio_mixer*/,
 			  nullptr /*audio_processing*/);
 		}
@@ -396,8 +396,7 @@ namespace mediasoupclient
 	{
 		MSC_TRACE();
 
-		const auto result =
-		  this->pc->CreateDataChannelOrError(label, config);
+		const auto result = this->pc->CreateDataChannelOrError(label, config);
 
 		if (result.ok())
 		{
@@ -434,9 +433,9 @@ namespace mediasoupclient
 		if (!error.ok())
 		{
 			MSC_WARN(
-					"webtc::SetLocalDescriptionObserver failure [%s:%s]",
-					webrtc::ToString(error.type()).data(),
-					error.message());
+			  "webtc::SetLocalDescriptionObserver failure [%s:%s]",
+			  webrtc::ToString(error.type()).data(),
+			  error.message());
 
 			auto message = std::string(error.message());
 
@@ -471,9 +470,9 @@ namespace mediasoupclient
 		if (!error.ok())
 		{
 			MSC_WARN(
-					"webtc::SetRemoteDescriptionObserver failure [%s:%s]",
-					webrtc::ToString(error.type()).data(),
-					error.message());
+			  "webtc::SetRemoteDescriptionObserver failure [%s:%s]",
+			  webrtc::ToString(error.type()).data(),
+			  error.message());
 
 			auto message = std::string(error.message());
 

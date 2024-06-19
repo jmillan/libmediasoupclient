@@ -1,13 +1,11 @@
+#include "mediasoupclient.hpp"
 #include "FakeTransportListener.hpp"
 #include "MediaSoupClientErrors.hpp"
 #include "MediaStreamTrackFactory.hpp"
 #include "fakeParameters.hpp"
-#include "mediasoupclient.hpp"
 #include <catch.hpp>
-#include <vector>
 #include <iostream>
-
-
+#include <vector>
 
 TEST_CASE("mediasoupclient", "[mediasoupclient]")
 {
@@ -54,7 +52,6 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 	{
 		REQUIRE_THROWS_AS(device->CanProduce("audio"), MediaSoupClientInvalidStateError);
 		REQUIRE_THROWS_AS(device->CanProduce("video"), MediaSoupClientInvalidStateError);
-
 	}
 
 	SECTION("device.CreateSendTransport() throws if not loaded")

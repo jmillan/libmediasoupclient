@@ -202,7 +202,8 @@ namespace mediasoupclient
 			std::for_each(
 			  encodings->begin(),
 			  encodings->end(),
-			  [&normalizedEncodings](const webrtc::RtpEncodingParameters& entry) {
+			  [&normalizedEncodings](const webrtc::RtpEncodingParameters& entry)
+			  {
 				  webrtc::RtpEncodingParameters encoding;
 
 				  encoding.active                   = entry.active;

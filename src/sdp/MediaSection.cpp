@@ -172,10 +172,11 @@ namespace mediasoupclient
 					if (codecOptions != nullptr && !codecOptions->empty())
 					{
 						auto& offerCodecs = offerRtpParameters["codecs"];
-						auto codecIt =
-						  find_if(offerCodecs.begin(), offerCodecs.end(), [&codec](json& offerCodec) {
-							  return offerCodec["payloadType"] == codec["payloadType"];
-						  });
+						auto codecIt      = find_if(
+              offerCodecs.begin(),
+              offerCodecs.end(),
+              [&codec](json& offerCodec)
+              { return offerCodec["payloadType"] == codec["payloadType"]; });
 
 						auto& offerCodec = *codecIt;
 						auto mimeType    = codec["mimeType"].get<std::string>();
@@ -323,9 +324,10 @@ namespace mediasoupclient
 				for (auto& ext : answerRtpParameters["headerExtensions"])
 				{
 					const auto& localExts = offerMediaObject["ext"];
-					auto localExtIt = find_if(localExts.begin(), localExts.end(), [&ext](const json& localExt) {
-						return localExt["uri"] == ext["uri"];
-					});
+					auto localExtIt       = find_if(
+            localExts.begin(),
+            localExts.end(),
+            [&ext](const json& localExt) { return localExt["uri"] == ext["uri"]; });
 
 					if (localExtIt == localExts.end())
 						continue;

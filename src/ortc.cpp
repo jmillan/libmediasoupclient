@@ -1008,10 +1008,11 @@ namespace mediasoupclient
 
 				json& localCodecs = localCaps["codecs"];
 
-				auto matchingLocalCodecIt =
-				  std::find_if(localCodecs.begin(), localCodecs.end(), [&remoteCodec](json& localCodec) {
-					  return matchCodecs(localCodec, remoteCodec, /*strict*/ true, /*modify*/ true);
-				  });
+				auto matchingLocalCodecIt = std::find_if(
+				  localCodecs.begin(),
+				  localCodecs.end(),
+				  [&remoteCodec](json& localCodec)
+				  { return matchCodecs(localCodec, remoteCodec, /*strict*/ true, /*modify*/ true); });
 
 				if (matchingLocalCodecIt == localCodecs.end())
 					continue;
@@ -1047,7 +1048,10 @@ namespace mediasoupclient
 			{
 				auto& localCodecs = localCaps["codecs"];
 				auto localCodecIt = std::find_if(
-				  localCodecs.begin(), localCodecs.end(), [&extendedCodec](const json& localCodec) {
+				  localCodecs.begin(),
+				  localCodecs.end(),
+				  [&extendedCodec](const json& localCodec)
+				  {
 					  return isRtxCodec(localCodec) &&
 					         localCodec["parameters"]["apt"] == extendedCodec["localPayloadType"];
 				  });
@@ -1058,7 +1062,10 @@ namespace mediasoupclient
 				auto& matchingLocalRtxCodec = *localCodecIt;
 				auto& remoteCodecs          = remoteCaps["codecs"];
 				auto remoteCodecIt          = std::find_if(
-          remoteCodecs.begin(), remoteCodecs.end(), [&extendedCodec](const json& remoteCodec) {
+          remoteCodecs.begin(),
+          remoteCodecs.end(),
+          [&extendedCodec](const json& remoteCodec)
+          {
             return isRtxCodec(remoteCodec) &&
                    remoteCodec["parameters"]["apt"] == extendedCodec["remotePayloadType"];
           });
@@ -1078,10 +1085,10 @@ namespace mediasoupclient
 			for (auto& remoteExt : remoteExts)
 			{
 				auto& localExts = localCaps["headerExtensions"];
-				auto localExtIt =
-				  std::find_if(localExts.begin(), localExts.end(), [&remoteExt](const json& localExt) {
-					  return matchHeaderExtensions(localExt, remoteExt);
-				  });
+				auto localExtIt = std::find_if(
+				  localExts.begin(),
+				  localExts.end(),
+				  [&remoteExt](const json& localExt) { return matchHeaderExtensions(localExt, remoteExt); });
 
 				if (localExtIt == localExts.end())
 					continue;
@@ -1390,8 +1397,11 @@ namespace mediasoupclient
 			auto headerExtensionsIt = rtpParameters.find("headerExtensions");
 
 			// Reduce codecs' RTCP feedback. Use Transport-CC if available, REMB otherwise.
-			auto headerExtensionIt =
-			  std::find_if(headerExtensionsIt->begin(), headerExtensionsIt->end(), [](json& ext) {
+			auto headerExtensionIt = std::find_if(
+			  headerExtensionsIt->begin(),
+			  headerExtensionsIt->end(),
+			  [](json& ext)
+			  {
 				  return ext["uri"].get<std::string>() ==
 				         "http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01";
 			  });
@@ -1417,8 +1427,11 @@ namespace mediasoupclient
 				return rtpParameters;
 			}
 
-			headerExtensionIt =
-			  std::find_if(headerExtensionsIt->begin(), headerExtensionsIt->end(), [](json& ext) {
+			headerExtensionIt = std::find_if(
+			  headerExtensionsIt->begin(),
+			  headerExtensionsIt->end(),
+			  [](json& ext)
+			  {
 				  return ext["uri"].get<std::string>() ==
 				         "http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time";
 			  });
@@ -1524,9 +1537,10 @@ namespace mediasoupclient
 			MSC_TRACE();
 
 			const auto& codecs = extendedRtpCapabilities["codecs"];
-			auto codecIt       = std::find_if(codecs.begin(), codecs.end(), [&kind](const json& codec) {
-        return kind == codec["kind"].get<std::string>();
-      });
+			auto codecIt       = std::find_if(
+        codecs.begin(),
+        codecs.end(),
+        [&kind](const json& codec) { return kind == codec["kind"].get<std::string>(); });
 
 			return codecIt != codecs.end();
 		}
@@ -1547,10 +1561,11 @@ namespace mediasoupclient
 
 			auto& firstMediaCodec = rtpParameters["codecs"][0];
 			const auto& codecs    = extendedRtpCapabilities["codecs"];
-			auto codecIt =
-			  std::find_if(codecs.begin(), codecs.end(), [&firstMediaCodec](const json& codec) {
-				  return codec["remotePayloadType"] == firstMediaCodec["payloadType"];
-			  });
+			auto codecIt          = std::find_if(
+        codecs.begin(),
+        codecs.end(),
+        [&firstMediaCodec](const json& codec)
+        { return codec["remotePayloadType"] == firstMediaCodec["payloadType"]; });
 
 			return codecIt != codecs.end();
 		}
@@ -1722,10 +1737,11 @@ static json reduceRtcpFeedback(const json& codecA, const json& codecB)
 
 	for (const auto& aFb : *rtcpFeedbackAIt)
 	{
-		auto rtcpFeedbackIt =
-		  std::find_if(rtcpFeedbackBIt->begin(), rtcpFeedbackBIt->end(), [&aFb](const json& bFb) {
-			  return (aFb["type"] == bFb["type"] && aFb["parameter"] == bFb["parameter"]);
-		  });
+		auto rtcpFeedbackIt = std::find_if(
+		  rtcpFeedbackBIt->begin(),
+		  rtcpFeedbackBIt->end(),
+		  [&aFb](const json& bFb)
+		  { return (aFb["type"] == bFb["type"] && aFb["parameter"] == bFb["parameter"]); });
 
 		if (rtcpFeedbackIt != rtcpFeedbackBIt->end())
 			reducedRtcpFeedback.push_back(*rtcpFeedbackIt);

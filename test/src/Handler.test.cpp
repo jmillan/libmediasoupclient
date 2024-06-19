@@ -9,7 +9,6 @@
 static const json TransportRemoteParameters = generateTransportRemoteParameters();
 static const json RtpParametersByKind       = generateRtpParametersByKind();
 
-
 class FakeHandlerListener : public mediasoupclient::Handler::PrivateListener
 {
 public:
@@ -26,7 +25,9 @@ TEST_CASE("Handler", "[Handler]")
 	{
 		json rtpCapabilities;
 
-		REQUIRE_NOTHROW(rtpCapabilities = mediasoupclient::Handler::GetNativeRtpCapabilities(&singleton.PeerConnectionOptions));
+		REQUIRE_NOTHROW(
+		  rtpCapabilities =
+		    mediasoupclient::Handler::GetNativeRtpCapabilities(&singleton.PeerConnectionOptions));
 
 		REQUIRE(rtpCapabilities["codecs"].is_array());
 		REQUIRE(rtpCapabilities["fecMechanisms"].is_array());
