@@ -1589,7 +1589,7 @@ namespace mediasoupclient
 			{
 				for (int idx = 0; idx < codecs.size(); ++idx)
 				{
-					if (matchCodecs(codecs[idx], const_cast<json&>(*capCodec)))
+					if (matchCodecs(codecs[idx], const_cast<json&>(*capCodec)), /*strict*/ true)
 					{
 						filteredCodecs.push_back(codecs[idx]);
 
