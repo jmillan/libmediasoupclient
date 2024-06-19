@@ -1,5 +1,5 @@
-#ifndef SINGLETON_H
-#define SINGLETON_H
+#ifndef MEDIA_STREAM_TRACK_FACTORY_H
+#define MEDIA_STREAM_TRACK_FACTORY_H
 
 #define MSC_CLASS "MediaStreamTrackFactory"
 
@@ -19,7 +19,7 @@ using namespace mediasoupclient;
 
 
 
-	void Singleton::createFactory()
+	void MediaStreamTrackFactory::Create()
 	{
 		if(Factory)
 			return;
@@ -63,30 +63,29 @@ using namespace mediasoupclient;
 		PeerConnectionOptions.factory = Factory.get();
 	}
 
-	void Singleton::ReleaseThreads() {
-		// 调用 reset 函数以释放资源
+	void MediaStreamTrackFactory::ReleaseThreads() {
 		if (Factory) {
-			// Factory->Release();
 			PeerConnectionOptions.factory = nullptr;
 			Factory = nullptr;
 		}
-		// if (NetworkThread) {
-		//     NetworkThread->Stop();
-		//     NetworkThread.reset();
-		// 	NetworkThread = nullptr;
-		// }
 
-		// if (WorkerThread) {
-		//     WorkerThread->Stop();
-		//     WorkerThread.reset();
-		// 	WorkerThread = nullptr;
-		// }
+		if (NetworkThread) {
+		    NetworkThread->Stop();
+		    NetworkThread.reset();
+			NetworkThread = nullptr;
+		}
 
-		// if (SignalingThread) {
-		//     SignalingThread->Stop();
-		//     SignalingThread.reset();
-		// 	SignalingThread = nullptr;
-		// }
+		if (WorkerThread) {
+		    WorkerThread->Stop();
+		    WorkerThread.reset();
+			WorkerThread = nullptr;
+		}
+
+		if (SignalingThread) {
+		    SignalingThread->Stop();
+		    SignalingThread.reset();
+			SignalingThread = nullptr;
+		}
 
 	}
 
@@ -96,7 +95,7 @@ using namespace mediasoupclient;
 // Audio track creation.
 rtc::scoped_refptr<webrtc::AudioTrackInterface> createAudioTrack(const std::string& label)
 {
-	Singleton& singleton = Singleton::getInstance();
+	MediaStreamTrackFactory& singleton = MediaStreamTrackFactory::getInstance();
 
 	cricket::AudioOptions options;
 	options.highpass_filter = false;
@@ -109,11 +108,11 @@ rtc::scoped_refptr<webrtc::AudioTrackInterface> createAudioTrack(const std::stri
 // Video track creation.
 rtc::scoped_refptr<webrtc::VideoTrackInterface> createVideoTrack(const std::string& label)
 {
-	Singleton& singleton = Singleton::getInstance();
+	MediaStreamTrackFactory& singleton = MediaStreamTrackFactory::getInstance();
 
 	rtc::scoped_refptr<webrtc::FakeVideoTrackSource> source = webrtc::FakeVideoTrackSource::Create();
 
 	return singleton.Factory->CreateVideoTrack(source, label);
 }
 
-#endif // SINGLETON_H
+#endif // MEDIA_STREAM_TRACK_FACTORY_H

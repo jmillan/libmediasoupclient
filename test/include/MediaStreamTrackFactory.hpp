@@ -15,18 +15,17 @@
 #include <iostream>
 
 
-class Singleton {
+class MediaStreamTrackFactory {
 public:
-    static Singleton& getInstance() {
-        static Singleton instance; // 唯一实例
+    static MediaStreamTrackFactory& getInstance() {
+        static MediaStreamTrackFactory instance;
         return instance;
     }
 
-    // 防止拷贝和赋值
-    Singleton(const Singleton&) = delete;
-    Singleton& operator=(const Singleton&) = delete;
+    MediaStreamTrackFactory(const MediaStreamTrackFactory&) = delete;
+    MediaStreamTrackFactory& operator=(const MediaStreamTrackFactory&) = delete;
 
-	void createFactory();
+	void Create();
 
 	void ReleaseThreads();
 
@@ -35,18 +34,17 @@ public:
 	mediasoupclient::PeerConnection::Options PeerConnectionOptions;
 
 private:
-    Singleton() {
-        std::cout << "Singleton created\n";
-        createFactory();
+    MediaStreamTrackFactory() {
+        Create();
     }
-    ~Singleton() {
-        std::cout << "Singleton destroyed\n";
+    ~MediaStreamTrackFactory() {
         ReleaseThreads();
     }
 
-	/* MediaStreamTrack holds reference to the threads of the PeerConnectionFactory.
-	* Use plain pointers in order to avoid threads being destructed before tracks.
-	*/
+	/**
+	 * MediaStreamTrack holds reference to the threads of the PeerConnectionFactory.
+	 * Use plain pointers in order to avoid threads being destructed before tracks.
+	 */
 	std::unique_ptr<rtc::Thread> NetworkThread;
 	std::unique_ptr<rtc::Thread> WorkerThread;
 	std::unique_ptr<rtc::Thread> SignalingThread;

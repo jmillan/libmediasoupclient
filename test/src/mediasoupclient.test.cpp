@@ -37,7 +37,7 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 
 	static json routerRtpCapabilities;
 
-	Singleton& singleton = Singleton::getInstance();
+	MediaStreamTrackFactory& singleton = MediaStreamTrackFactory::getInstance();
 
 	SECTION("create a Device succeeds")
 	{
@@ -815,7 +815,5 @@ TEST_CASE("mediasoupclient", "[mediasoupclient]")
 		REQUIRE_THROWS_AS(
 			sendTransport->UpdateIceServers(iceServers),
 			MediaSoupClientError);
-
-		// context = nullptr;
 	}
 }
