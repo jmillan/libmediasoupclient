@@ -230,9 +230,9 @@ namespace mediasoupclient
 		// Let's try to recycle a closed media section (if any).
 		// NOTE: We can recycle a closed m=audio section with a new m=video.
 		auto mediaSectionIt = find_if(
-		  this->mediaSections.begin(), this->mediaSections.end(), [](const MediaSection* mediaSection) {
-			  return mediaSection->IsClosed();
-		  });
+		  this->mediaSections.begin(),
+		  this->mediaSections.end(),
+		  [](const MediaSection* mediaSection) { return mediaSection->IsClosed(); });
 
 		if (mediaSectionIt != this->mediaSections.end())
 		{

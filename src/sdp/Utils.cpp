@@ -227,14 +227,18 @@ namespace mediasoupclient
 				// Get the SSRC.
 				auto mSsrcs = offerMediaObject["ssrcs"];
 
-				auto jsonSsrcIt = std::find_if(mSsrcs.begin(), mSsrcs.end(), [](const json& line) {
-					auto jsonAttributeIt = line.find("attribute");
+				auto jsonSsrcIt = std::find_if(
+				  mSsrcs.begin(),
+				  mSsrcs.end(),
+				  [](const json& line)
+				  {
+					  auto jsonAttributeIt = line.find("attribute");
 
-					if (jsonAttributeIt == line.end() || !jsonAttributeIt->is_string())
-						return false;
+					  if (jsonAttributeIt == line.end() || !jsonAttributeIt->is_string())
+						  return false;
 
-					return jsonAttributeIt->get<std::string>() == "msid";
-				});
+					  return jsonAttributeIt->get<std::string>() == "msid";
+				  });
 
 				if (jsonSsrcIt == mSsrcs.end())
 				{
@@ -257,7 +261,10 @@ namespace mediasoupclient
 					auto& ssrcGroups = *jsonSsrcGroupsIt;
 
 					std::find_if(
-					  ssrcGroups.begin(), ssrcGroups.end(), [&firstSsrc, &firstRtxSsrc](const json& line) {
+					  ssrcGroups.begin(),
+					  ssrcGroups.end(),
+					  [&firstSsrc, &firstRtxSsrc](const json& line)
+					  {
 						  auto jsonSemanticsIt = line.find("semantics");
 
 						  if (jsonSemanticsIt == line.end() || !jsonSemanticsIt->is_string())
@@ -281,17 +288,21 @@ namespace mediasoupclient
 					  });
 				}
 
-				jsonSsrcIt = std::find_if(mSsrcs.begin(), mSsrcs.end(), [](const json& line) {
-					auto jsonAttributeIt = line.find("attribute");
-					if (jsonAttributeIt == line.end() || !jsonAttributeIt->is_string())
-						return false;
+				jsonSsrcIt = std::find_if(
+				  mSsrcs.begin(),
+				  mSsrcs.end(),
+				  [](const json& line)
+				  {
+					  auto jsonAttributeIt = line.find("attribute");
+					  if (jsonAttributeIt == line.end() || !jsonAttributeIt->is_string())
+						  return false;
 
-					auto jsonIdIt = line.find("id");
-					if (jsonIdIt == line.end() || !jsonIdIt->is_number())
-						return false;
+					  auto jsonIdIt = line.find("id");
+					  if (jsonIdIt == line.end() || !jsonIdIt->is_number())
+						  return false;
 
-					return (jsonAttributeIt->get<std::string>() == "cname");
-				});
+					  return (jsonAttributeIt->get<std::string>() == "cname");
+				  });
 
 				if (jsonSsrcIt == mSsrcs.end())
 					MSC_THROW_ERROR("CNAME line not found");
@@ -396,11 +407,15 @@ namespace mediasoupclient
 
 				const json& mSsrcs = *jsonMssrcsIt;
 
-				auto jsonSsrcIt = find_if(mSsrcs.begin(), mSsrcs.end(), [](const json& line) {
-					auto jsonAttributeIt = line.find("attribute");
+				auto jsonSsrcIt = find_if(
+				  mSsrcs.begin(),
+				  mSsrcs.end(),
+				  [](const json& line)
+				  {
+					  auto jsonAttributeIt = line.find("attribute");
 
-					return (jsonAttributeIt != line.end() && jsonAttributeIt->is_string());
-				});
+					  return (jsonAttributeIt != line.end() && jsonAttributeIt->is_string());
+				  });
 
 				if (jsonSsrcIt == mSsrcs.end())
 					return "";
@@ -490,9 +505,10 @@ namespace mediasoupclient
 						continue;
 
 					auto& rtps     = answerMediaObject["rtp"];
-					auto jsonRtpIt = find_if(rtps.begin(), rtps.end(), [&codec](const json& r) {
-						return r["payload"] == codec["payloadType"];
-					});
+					auto jsonRtpIt = find_if(
+					  rtps.begin(),
+					  rtps.end(),
+					  [&codec](const json& r) { return r["payload"] == codec["payloadType"]; });
 
 					if (jsonRtpIt == rtps.end())
 						continue;
@@ -502,9 +518,10 @@ namespace mediasoupclient
 						answerMediaObject["fmtp"] = json::array();
 
 					auto& fmtps     = answerMediaObject["fmtp"];
-					auto jsonFmtpIt = find_if(fmtps.begin(), fmtps.end(), [&codec](const json& f) {
-						return f["payload"] == codec["payloadType"];
-					});
+					auto jsonFmtpIt = find_if(
+					  fmtps.begin(),
+					  fmtps.end(),
+					  [&codec](const json& f) { return f["payload"] == codec["payloadType"]; });
 
 					if (jsonFmtpIt == fmtps.end())
 					{

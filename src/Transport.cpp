@@ -202,7 +202,8 @@ namespace mediasoupclient
 			std::for_each(
 			  encodings->begin(),
 			  encodings->end(),
-			  [&normalizedEncodings](const webrtc::RtpEncodingParameters& entry) {
+			  [&normalizedEncodings](const webrtc::RtpEncodingParameters& entry)
+			  {
 				  webrtc::RtpEncodingParameters encoding;
 
 				  encoding.active                   = entry.active;
@@ -369,17 +370,17 @@ namespace mediasoupclient
 		return this->sendHandler->GetSenderStats(producer->GetLocalId());
 	}
 
-	void SendTransport::OnPause(const Producer* producer) 
+	void SendTransport::OnPause(const Producer* producer)
 	{
 		MSC_TRACE();
 
 		this->sendHandler->PauseSending(producer->GetLocalId());
 	}
-	
-	void SendTransport::OnResume(const Producer* producer) 
+
+	void SendTransport::OnResume(const Producer* producer)
 	{
 		MSC_TRACE();
-		
+
 		this->sendHandler->ResumeSending(producer->GetLocalId());
 	}
 
