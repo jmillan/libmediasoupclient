@@ -260,32 +260,29 @@ namespace mediasoupclient
 				{
 					auto& ssrcGroups = *jsonSsrcGroupsIt;
 
-					std::find_if(
-					  ssrcGroups.begin(),
-					  ssrcGroups.end(),
-					  [&firstSsrc, &firstRtxSsrc](const json& line)
-					  {
-						  auto jsonSemanticsIt = line.find("semantics");
+					for (const auto& line : ssrcGroups)
+					{
+						auto jsonSemanticsIt = line.find("semantics");
 
-						  if (jsonSemanticsIt == line.end() || !jsonSemanticsIt->is_string())
-							  return false;
+						if (jsonSemanticsIt == line.end() || !jsonSemanticsIt->is_string())
+							continue;
 
-						  auto jsonSsrcsIt = line.find("ssrcs");
+						auto jsonSsrcsIt = line.find("ssrcs");
 
-						  if (jsonSsrcsIt == line.end() || !jsonSsrcsIt->is_string())
-							  return false;
+						if (jsonSsrcsIt == line.end() || !jsonSsrcsIt->is_string())
+							continue;
 
-						  auto v = mediasoupclient::Utils::split(jsonSsrcsIt->get<std::string>(), ' ');
+						auto v = mediasoupclient::Utils::split(jsonSsrcsIt->get<std::string>(), ' ');
 
-						  if (std::stoull(v[0]) == firstSsrc)
-						  {
-							  firstRtxSsrc = std::stoull(v[1]);
+						if (std::stoull(v[0]) == firstSsrc)
+						{
+							firstRtxSsrc = std::stoull(v[1]);
 
-							  return true;
-						  }
+							break;
+						}
 
-						  return false;
-					  });
+						continue;
+					};
 				}
 
 				jsonSsrcIt = std::find_if(

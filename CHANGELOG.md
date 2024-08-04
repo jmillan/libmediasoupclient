@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.4.3
+
+* Update to libwebrtc M120/6099 ([#173](https://github.com/versatica/libmediasoupclient/pull/173)). Thanks @Poldraunic, @janreyho, @copiltembel.
+
 ### 3.4.2
 
 * Fix explicit codec selection ([#164](https://github.com/versatica/libmediasoupclient/pull/164)). Thanks @fedulvtubudul.
