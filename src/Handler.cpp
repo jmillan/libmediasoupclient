@@ -629,7 +629,7 @@ namespace mediasoupclient
 		if (locaIdIt == this->mapMidTransceiver.end())
 			MSC_THROW_ERROR("associated RtpTransceiver not found");
 
-		auto* transceiver = locaIdIt->second;
+		auto transceiver = locaIdIt->second;
 
 		transceiver->SetDirectionWithError(webrtc::RtpTransceiverDirection::kInactive);
 		webrtc::PeerConnectionInterface::RTCOfferAnswerOptions options;
@@ -653,7 +653,7 @@ namespace mediasoupclient
 		if (locaIdIt == this->mapMidTransceiver.end())
 			MSC_THROW_ERROR("associated RtpTransceiver not found");
 
-		auto* transceiver = locaIdIt->second;
+		auto transceiver = locaIdIt->second;
 
 		transceiver->SetDirectionWithError(webrtc::RtpTransceiverDirection::kSendOnly);
 		webrtc::PeerConnectionInterface::RTCOfferAnswerOptions options;
