@@ -113,6 +113,8 @@ namespace mediasoupclient
 		nlohmann::json GetSenderStats(const std::string& localId);
 		void RestartIce(const nlohmann::json& iceParameters) override;
 		DataChannel SendDataChannel(const std::string& label, webrtc::DataChannelInit dataChannelInit);
+		void PauseSending(const std::string& localId);
+		void ResumeSending(const std::string& localId);
 
 	private:
 		// Generic sending RTP parameters for audio and video.

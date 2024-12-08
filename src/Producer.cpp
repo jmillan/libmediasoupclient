@@ -131,6 +131,8 @@ namespace mediasoupclient
 		}
 
 		this->track->set_enabled(false);
+
+		this->privateListener->OnPause(this);
 	}
 
 	/**
@@ -148,6 +150,8 @@ namespace mediasoupclient
 		}
 
 		this->track->set_enabled(true);
+
+		this->privateListener->OnResume(this);
 	}
 
 	/**
